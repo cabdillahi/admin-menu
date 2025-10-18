@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id        String     @id @default(cuid())
+  name      String
+  subdomain String?    @unique
+  website   String?
+  logo      String?
+  address   String?
+  phone     String
+  email     String?
+  city      String?
+  currency  String?
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  User      User[]
+  Product   Food[]
+  Category  Category[]
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String
+  password     String
+  name         String
+  isActive     Boolean       @default(true)
+  role         Role          @default(ADMIN)
+  tenantId     String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  RefreshToken RefreshToken?
+  tenant       Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([email, tenantId])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Define the Project model
+model Food {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String
+  price       Float
+  imageUrl    String
+  createAt    DateTime @default(now())
+  updateAt    DateTime @updatedAt
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  Tenant   Tenant @relation(fields: [tenantId], references: [id])
+  tenantId String
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  imageUrl    String?
+  createAt    DateTime @default(now())
+  updateAt    DateTime @updatedAt
+
+  //relationship
+  product  Food[]
+  Tenant   Tenant @relation(fields: [tenantId], references: [id])
+  tenantId String
+}
+
+enum Role {
+  ADMIN
+  USER
+  MODERATOR
+}
