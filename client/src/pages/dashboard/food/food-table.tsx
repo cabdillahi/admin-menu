@@ -1,5 +1,3 @@
-"use client";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +17,7 @@ import { CreateFoodDialog } from "./create-food-dialog";
 import { DeleteFoodDialog } from "./delete-food-dialog";
 import { FoodSkeleton } from "./food-skeleton";
 import { UpdateFoodDialog } from "./upate-food";
+import { UploadExcelDialog } from "./upload-excel-dialog";
 
 export function FoodsTable() {
   const [page, setPage] = useState(1);
@@ -60,7 +59,12 @@ export function FoodsTable() {
         searchValue={search}
         onSearchChange={setSearch}
         onRefresh={refetch}
-        actions={<CreateFoodDialog />}
+        actions={
+          <div className="flex gap-2">
+            <UploadExcelDialog />
+            <CreateFoodDialog />
+          </div>
+        }
       />
 
       <div className="rounded-md border">
@@ -101,8 +105,10 @@ export function FoodsTable() {
                   <TableCell className="font-medium">{food.name}</TableCell>
                   <TableCell>{food.category?.name || "N/A"}</TableCell>
                   <TableCell>
-                    
-                    {food.Tenant?.currency === "USD" ? (`$${food.price.toFixed(2)}`): (`SHL ${food.price.toFixed(2)}`)}</TableCell>
+                    {food.Tenant?.currency === "USD"
+                      ? `$${food.price.toFixed(2)}`
+                      : `SHL ${food.price.toFixed(2)}`}
+                  </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button

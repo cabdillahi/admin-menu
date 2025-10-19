@@ -1,7 +1,7 @@
 export interface FoodInput {
   name: string;
   price: number;
-  category: string;
+  categoryId: number;
   status?: string;
 }
 

@@ -72,7 +72,6 @@ export function Sidebar({
 
   const userRole = data?.user?.role;
 
-  // Filter sidebar items based on user role
   const visibleSidebarItems =
     userRole === "ADMIN"
       ? sidebarItems
@@ -86,7 +85,6 @@ export function Sidebar({
   };
 
   const handleNavClick = (hasSubItems: boolean) => {
-    // Only close on mobile (screen width < 768px) and if item has no subItems
     if (window.innerWidth < 768 && !hasSubItems) {
       setSidebarOpen(false);
     }
