@@ -32,7 +32,7 @@ model User {
   password     String
   name         String
   isActive     Boolean       @default(true)
-  role         Role          @default(ADMIN)
+  role         Role          @default(USER)
   tenantId     String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -62,8 +62,8 @@ model Food {
   updateAt    DateTime @updatedAt
   categoryId  Int
   category    Category @relation(fields: [categoryId], references: [id])
-  Tenant   Tenant @relation(fields: [tenantId], references: [id])
-  tenantId String
+  Tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId    String
 }
 
 model Category {
