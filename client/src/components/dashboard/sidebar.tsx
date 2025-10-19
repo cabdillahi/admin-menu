@@ -6,6 +6,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useWhoamiQuery } from "@/services/auth/auth-api";
 import {
   Bed,
   ChevronDown,
@@ -67,6 +68,15 @@ export function Sidebar({
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const location = useLocation();
 
+  const { data } = useWhoamiQuery();
+
+  const userRole = data?.user?.role;
+
+  // Filter sidebar items based on user role
+  const visibleSidebarItems =
+    userRole === "ADMIN"
+      ? sidebarItems
+      : sidebarItems.filter((item) => item.label !== "Customer");
   const toggleExpanded = (label: string) => {
     setExpandedItems((prev) =>
       prev.includes(label)
@@ -187,7 +197,7 @@ export function Sidebar({
 
         <div className="flex h-[86vh] flex-col">
           <nav className="flex-1 space-y-1 p-4">
-            {sidebarItems.map((item) => {
+            {visibleSidebarItems.map((item) => {
               return (
                 <div key={item.label}>
                   {renderSidebarItem(item)}
