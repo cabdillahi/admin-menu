@@ -14,8 +14,8 @@ const router = Router();
 router.post("/", decodeToken, createCategory);
 router.patch("/", decodeToken, updateCategory);
 router.delete("/:id", decodeToken, deleteCategory);
-router.get("/", getCategories);
-router.get("/all", getAllCategories);
+router.get("/",decodeToken, getCategories);
+router.get("/all",decodeToken, getAllCategories);
 router.get("/:tenantName", getCategoriesPublic);
 
 export default router;
