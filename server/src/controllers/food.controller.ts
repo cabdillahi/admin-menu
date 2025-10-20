@@ -31,11 +31,11 @@ export const createFood = async (req: customuserRequest, res: Response) => {
       },
     });
 
-    if (exist) {
-      return res.status(400).json({
-        message: "Food name already exists!",
-      });
-    }
+    // if (exist) {
+    //   return res.status(400).json({
+    //     message: "Food name already exists!",
+    //   });
+    // }
 
     const food = await prisma.food.create({
       data: {
